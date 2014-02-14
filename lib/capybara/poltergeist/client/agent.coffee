@@ -56,8 +56,13 @@ class PoltergeistAgent
 
   nodeCall: (id, name, args) ->
     node = this.get(id)
-    throw new PoltergeistAgent.ObsoleteNode if node.isObsolete()
-    node[name].apply(node, args)
+    try
+      node[name].apply(node, args)
+    catch error
+      if node.isObsolete()
+        throw new PoltergeistAgent.ObsoleteNode
+      else
+        throw error
 
   beforeUpload: (id) ->
     this.get(id).setAttribute('_poltergeist_selected', '')
