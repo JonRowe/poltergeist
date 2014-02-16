@@ -159,7 +159,7 @@ class PoltergeistAgent.Node
   getAttributes: ->
     attrs = {}
     for attr, i in @element.attributes
-      attrs[attr.name] = attr.value
+      attrs[attr.name] = attr.value.replace("\n","\\n");
     attrs
 
   getAttribute: (name) ->
