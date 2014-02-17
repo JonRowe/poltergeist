@@ -237,7 +237,14 @@ class Poltergeist.WebPage
 
   evaluate: (fn, args...) ->
     this.injectAgent()
-    JSON.parse @native.evaluate("function() { return PoltergeistAgent.stringify(#{this.stringifyCall(fn, args)}) }")
+    JSON.parse this.sanitize(@native.evaluate("function() { return PoltergeistAgent.stringify(#{this.stringifyCall(fn, args)}) }"))
+
+  sanitize: (potential_string) ->
+    if typeof(potential_string) == String
+      # JSON doesn't like \r or \n in strings unless escaped
+      potential_string.replace("\n","\\n").replace("\r","\\r")
+    else
+      potential_string
 
   execute: (fn, args...) ->
     @native.evaluate("function() { #{this.stringifyCall(fn, args)} }")
