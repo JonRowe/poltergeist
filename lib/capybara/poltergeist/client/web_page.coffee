@@ -240,7 +240,7 @@ class Poltergeist.WebPage
     JSON.parse this.sanitize(@native.evaluate("function() { return PoltergeistAgent.stringify(#{this.stringifyCall(fn, args)}) }"))
 
   sanitize: (potential_string) ->
-    if typeof(potential_string) == String
+    if typeof(potential_string) == "string"
       # JSON doesn't like \r or \n in strings unless escaped
       potential_string.replace("\n","\\n").replace("\r","\\r")
     else
